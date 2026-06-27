@@ -54,7 +54,15 @@ tags: [csend, inter-agent, architecture, crypto, pqc, memoire]
   smoke E2E vérifié → `24b7e23`.
 - 2026-06-27 — Stretch : recovery Shamir GF(256) + CLI split/combine, smoke E2E → `a20dd40`.
 - 2026-06-27 — Couche providers pluggable (Claude réel, extension Codex/Gemini) → `08a3db2`.
-- 2026-06-27 — Suite verte tout du long (`go test -race`), 8 commits.
+- 2026-06-27 — Suite verte tout du long (`go test -race`), 8 commits (cœur).
+- 2026-06-27 — Workflow frontend §10 : anti-slop lu, direction nommée (#3 rétro-futuriste
+  terminal × #11 industriel), checklist §9 cochée.
+- 2026-06-27 — Site `site/` (HTML/CSS/JS + GSAP) : hero terminal animé, séquence scroll
+  8 couches, crypto, install, statut honnête (zéro fausse preuve). **Vérifié au screenshot**
+  (hero + page complète), favicon corrigé, console propre.
+- 2026-06-27 — Install facilitée : module path → `go install`, `.goreleaser.yaml` (Homebrew),
+  `site/install.sh`, README réécrit (humains + agents) → commit `bda3e2b`.
+- 2026-06-27 — `docs/PUBLISHING.md` : recommandation de publication + distribution.
 
 ## Actions à mener à l'avenir (honnête — non fait cette session)
 
