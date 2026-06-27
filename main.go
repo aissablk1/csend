@@ -93,7 +93,7 @@ func main() {
 			fail(err.Error())
 		}
 		fmt.Println(StateDebug(screen))
-	case "help", "-h", "--help":
+	case "h", "-h", "--h", "help", "-help", "--help", "-?":
 		fmt.Println(usage)
 	default:
 		fmt.Fprintf(os.Stderr, "commande inconnue: %s\n\n%s\n", os.Args[1], usage)
