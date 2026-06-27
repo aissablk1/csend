@@ -77,6 +77,12 @@ tags: [csend, inter-agent, architecture, crypto, pqc, memoire]
   Agent Teams, screen, TLS/PQC) avec la raison réelle de chaque blocage.
 - 2026-06-27 — Recherche vérifiée **Sakana Fugu** (Sakana AI, 22 juin 2026) : routeur de
   modèles cloud OpenAI-compatible → **catégorie différente** de csend (pas un concurrent).
+- 2026-06-27 — **E2E sur le fil** : keyring (clés publiques des pairs), `id --export`,
+  `contact add/list` ; `inbox`/`remote` scellent **auto** quand le contact est connu, `recv`
+  déchiffre. Le « chiffré de bout en bout » est branché sur les vrais messages (plus dormant).
+  Tests cross-store + smoke (0 clair dans le fichier déposé). Commit `…E2E`.
+- 2026-06-27 — **Aide** accessible via `h`, `-h`, `--h`, `help`, `-help`, `--help`, `-?`
+  (demande d'Aïssa). 6 formes vérifiées.
 
 ## Actions à mener à l'avenir
 
