@@ -90,9 +90,9 @@ func main() {
 }
 
 func mustBackend() {
-	if !cmuxAvailable() {
-		fail("backend cmux indisponible (Vibe Island lancé ? socket vivant ?). " +
-			"Les backends tmux/Terminal arrivent en phase suivante.")
+	if !backendAvailable() {
+		fail("aucun backend de terminal disponible (cmux ou tmux). Lance l'un des deux, " +
+			"ou utilise la voie coopérative : csend inbox / csend recv.")
 	}
 }
 

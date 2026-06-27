@@ -88,8 +88,8 @@ func callerRef(t *treeJSON) string {
 	return os.Getenv("CMUX_SURFACE_ID")
 }
 
-// selfRef returns the surface this process runs in, so we never target ourselves.
-func selfRef() string {
+// cmuxSelfRef returns the surface this process runs in, so we never target ourselves.
+func cmuxSelfRef() string {
 	t, err := loadTree()
 	if err != nil {
 		t = nil
@@ -105,8 +105,8 @@ func isSelf(s Surface, self string) bool {
 	return s.Here || (self != "" && s.Ref == self)
 }
 
-// listSurfaces flattens the tree, tagging each surface with its workspace ref+name.
-func listSurfaces() ([]Surface, error) {
+// cmuxListSurfaces flattens the tree, tagging each surface with its workspace ref+name.
+func cmuxListSurfaces() ([]Surface, error) {
 	t, err := loadTree()
 	if err != nil {
 		return nil, err
@@ -131,7 +131,7 @@ func listSurfaces() ([]Surface, error) {
 
 // readScreen returns the surface text via the socket. We prefer the base64 field
 // (exact bytes) over the plain "text" field.
-func readScreen(ref, wsRef string, lines int) (string, error) {
+func cmuxReadScreen(ref, wsRef string, lines int) (string, error) {
 	res, err := rpcCall("surface.read_text", map[string]any{
 		"surface_id": ref, "workspace_id": wsRef, "lines": lines, "scrollback": true,
 	})
@@ -162,7 +162,7 @@ func readScreenRetry(ref, wsRef string, attempts int) (string, error) {
 
 // sendText types text into a surface WITHOUT submitting (never embeds a newline:
 // cmux turns "\n"/"\r" into Enter and Claude's Ink TUI would submit early).
-func sendText(ref, wsRef, text string) error {
+func cmuxSendText(ref, wsRef, text string) error {
 	_, err := rpcCall("surface.send_text", map[string]any{
 		"surface_id": ref, "workspace_id": wsRef, "text": text,
 	})
@@ -170,7 +170,7 @@ func sendText(ref, wsRef, text string) error {
 }
 
 // sendKey sends one key event (lowercase: "enter", "escape", "ctrl+c").
-func sendKey(ref, wsRef, key string) error {
+func cmuxSendKey(ref, wsRef, key string) error {
 	_, err := rpcCall("surface.send_key", map[string]any{
 		"surface_id": ref, "workspace_id": wsRef, "key": key,
 	})
