@@ -1,0 +1,49 @@
+# GoReleaser — binaires multi-plateformes + tap Homebrew, en 1 push de tag.
+#   git tag v0.2.0 && git push --tags   →   CI publie la release + met à jour le tap.
+version: 2
+project_name: csend
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - id: csend
+    main: .
+    binary: csend
+    env: [CGO_ENABLED=0]
+    goos: [darwin, linux, windows]
+    goarch: [amd64, arm64]
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - id: csend
+    # Nom STABLE (sans version) pour que site/install.sh résolve
+    # github.com/aissablk1/csend/releases/latest/download/csend_<os>_<arch>.tar.gz
+    name_template: "csend_{{ .Os }}_{{ .Arch }}"
+    format_overrides:
+      - goos: windows
+        format: zip
+
+checksum:
+  name_template: "checksums.txt"
+
+brews:
+  - name: csend
+    repository:
+      owner: aissablk1
+      name: homebrew-tap
+    homepage: "https://csend.dev"
+    description: "Bus de messagerie inter-agents pour CLI (state-aware, chiffré, zéro dépendance)"
+    license: "MIT"
+    install: |
+      bin.install "csend"
+    test: |
+      system "#{bin}/csend", "help"
+
+release:
+  github:
+    owner: aissablk1
+    name: csend
+  draft: false
