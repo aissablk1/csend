@@ -195,6 +195,14 @@ func cmdRecv(args []string) {
 	if err != nil {
 		fail(err.Error())
 	}
+	if wantJSON(args) {
+		arr := make([]jsonMessage, 0, len(msgs))
+		for _, m := range msgs {
+			arr = append(arr, jsonMessage{From: m.From, TS: m.TS, Body: openBody(s, m), Encrypted: m.Sealed != nil})
+		}
+		emitJSON(map[string]any{"agent": agent, "count": len(arr), "messages": arr})
+		return
+	}
 	if len(msgs) == 0 {
 		fmt.Printf("Inbox vide pour %s.\n", agent)
 		return

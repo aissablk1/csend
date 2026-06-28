@@ -70,6 +70,15 @@ func cmdRegister(args []string) {
 func cmdWhoami(args []string) {
 	s := mustStore()
 	id := selfAgentID()
+	if wantJSON(args) {
+		fp := ""
+		if b, ok := loadPublicBundle(s); ok {
+			fp = fingerprint(b)
+		}
+		n, _ := s.Inbox().Pending(id)
+		emitJSON(map[string]any{"agent": id, "fingerprint": fp, "inbox_pending": n})
+		return
+	}
 	fmt.Printf("agent-id : %s\n", id)
 	if b, ok := loadPublicBundle(s); ok {
 		fmt.Printf("identité : %s\n", fingerprint(b))
@@ -90,6 +99,22 @@ func cmdAgents(args []string) {
 	recs, err := s.ListSessions()
 	if err != nil {
 		fail(err.Error())
+	}
+	if wantJSON(args) {
+		type ja struct {
+			Agent     string `json:"agent"`
+			Provider  string `json:"provider"`
+			Workspace string `json:"workspace"`
+			LastSeen  string `json:"last_seen"`
+			Inbox     int    `json:"inbox_pending"`
+		}
+		arr := make([]ja, 0, len(recs))
+		for _, r := range recs {
+			n, _ := s.Inbox().Pending(r.SessionID)
+			arr = append(arr, ja{Agent: r.SessionID, Provider: r.Provider, Workspace: r.Workspace, LastSeen: r.LastSeen, Inbox: n})
+		}
+		emitJSON(map[string]any{"count": len(arr), "agents": arr})
+		return
 	}
 	if len(recs) == 0 {
 		fmt.Println("Aucun agent coopératif enregistré. Dans une session : csend register")
