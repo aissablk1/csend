@@ -1,3 +1,9 @@
 # Built binaries (produced by install.sh)
 /csend
 /.build/
+
+# Vidéo de lancement + assets Hyperframes (générés, non versionnés)
+/brag-output/
+
+# Sauvegardes locales (§6) — jamais versionnées
+/_backup/
