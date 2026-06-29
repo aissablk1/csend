@@ -169,10 +169,24 @@ func deliverTo(tgt Surface, text string, mode SubmitMode) (Outcome, error) {
 	}
 
 	if submit {
-		if err := sendKey(tgt.Ref, tgt.WorkspaceRef, "enter"); err != nil {
-			return Outcome{}, err
+		// Évite la course de collage : un gros texte suivi d'Entrée immédiate laisse
+		// le message TAPÉ mais NON soumis (Claude Code en mode paste traite Entrée
+		// comme un saut de ligne). On laisse la saisie se poser, on valide, puis on
+		// VÉRIFIE réellement — au lieu d'annoncer « submitted » à l'aveugle.
+		time.Sleep(250 * time.Millisecond)
+		_ = sendKey(tgt.Ref, tgt.WorkspaceRef, "enter")
+		if submitConfirmed(tgt) {
+			out.Action = "submitted"
+		} else {
+			time.Sleep(400 * time.Millisecond)
+			_ = sendKey(tgt.Ref, tgt.WorkspaceRef, "enter") // 2e tentative
+			if submitConfirmed(tgt) {
+				out.Action = "submitted"
+			} else {
+				out.Action = "staged"
+				out.Reason = "Entrée n'a pas validé (saisie restée en place) — déposé, à valider"
+			}
 		}
-		out.Action = "submitted"
 	} else {
 		out.Action = "staged"
 		if state == StateBusy {
@@ -181,6 +195,19 @@ func deliverTo(tgt Surface, text string, mode SubmitMode) (Outcome, error) {
 	}
 	audit(tgt, text, out)
 	return out, nil
+}
+
+// submitConfirmed re-reads the target after an Enter and reports whether the input
+// actually cleared (empty idle prompt) or the agent's turn started (busy). If our
+// text is still sitting in the input box, the submission did not take (paste race).
+func submitConfirmed(tgt Surface) bool {
+	time.Sleep(250 * time.Millisecond)
+	screen, err := readScreen(tgt.Ref, tgt.WorkspaceRef, stateTailLines)
+	if err != nil {
+		return false
+	}
+	st, _ := DetectAnyState(screen)
+	return st == StateIdle || st == StateBusy
 }
 
 // audit appends an append-only JSONL record. We log a content HASH + length,

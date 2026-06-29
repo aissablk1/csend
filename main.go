@@ -76,6 +76,9 @@ func main() {
 	case "read":
 		mustBackend()
 		cmdRead(os.Args[2:])
+	case "key":
+		mustBackend()
+		cmdKey(os.Args[2:]) // envoyer une touche brute (enter/escape/ctrl+c…)
 	case "register":
 		cmdRegister(os.Args[2:]) // join the bus from ANY terminal/provider/OS
 	case "agents":
