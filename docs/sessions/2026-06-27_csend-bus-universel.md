@@ -125,6 +125,15 @@ tags: [csend, inter-agent, architecture, crypto, pqc, memoire]
   `releases/latest/download/…` → HTTP 200 (résolution `install.sh`). Tap Homebrew **sauté**
   (repo `homebrew-tap` inexistant) → reste à faire. Déprécations goreleaser (`format`, `brews`)
   à moderniser avant la prochaine release.
+- 2026-06-29 — **Homebrew + modernisation goreleaser (autonomie, ordre d'Aïssa)** : config
+  modernisée (`archives.formats` ; note formule-vs-cask — on garde la **formule** cross-OS car un
+  cask est macOS-only) ; **tap `aissablk1/homebrew-tap` créé**, release v0.2.0 régénérée et
+  **formule binaire cross-plateforme poussée** (macOS+Linux, intel+arm, 4 url/sha256). `brew
+  install aissablk1/tap/csend` opérationnel (install réelle = côté Aïssa, §5). Badge release +
+  caveats d'install au présent dans le README.
+- 2026-06-29 — **Site (GitHub Pages) BLOQUÉ** : Pages (deploy-from-branch) s'appuie sur le workflow
+  `pages-build-deployment` = **Actions**, désactivé par le verrou de facturation GitHub. Non
+  faisable en autonomie → **guidé** (Cloudflare Pages reco §58, ou Pages après régularisation).
 
 ## Actions à mener à l'avenir
 

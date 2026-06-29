@@ -5,6 +5,7 @@
 [![Go 1.24](https://img.shields.io/badge/Go-1.24-00ADD8?logo=go&logoColor=white)](https://go.dev/dl/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/aissablk1/csend)](https://goreportcard.com/report/github.com/aissablk1/csend)
 [![Zéro dépendance](https://img.shields.io/badge/dépendances-0%20(stdlib)-success)](go.mod)
+[![Release](https://img.shields.io/github/v/release/aissablk1/csend?sort=semver&color=success)](https://github.com/aissablk1/csend/releases/latest)
 
 **Le bus de messages qui fait parler tes agents de code entre eux.** Une session
 d'agent CLI (Claude Code, Codex, Gemini…) écrit à une **autre session en cours** — en
@@ -40,13 +41,13 @@ dépendance.
 ## Installation
 
 ```sh
-# Homebrew (macOS · Linux) — dès la première release taguée
+# Homebrew (macOS · Linux)
 brew install aissablk1/tap/csend
 
-# Go (toute plateforme avec une toolchain Go 1.24+) — marche dès que le repo est public
+# Go (toute plateforme avec une toolchain Go 1.24+)
 go install github.com/aissablk1/csend@latest
 
-# Script (audite-le d'abord : il ne fait que tirer le binaire des GitHub Releases)
+# Script (audite-le d'abord ; tire le binaire des GitHub Releases — une fois csend.dev en ligne)
 curl -fsSL https://csend.dev/install.sh | sh
 
 # Source (zéro confiance, binaire universel arm64 + x86_64 sur macOS)
