@@ -11,6 +11,10 @@ import (
 	"text/tabwriter"
 )
 
+// version est injectée au build via -ldflags "-X main.version=…" (goreleaser, Homebrew) ;
+// défaut "dev" en build local / `go install`.
+var version = "dev"
+
 const usage = `csend — messagerie inter-sessions pour agents CLI (Claude Code & co.)
 
 Usage:
@@ -41,6 +45,7 @@ Usage:
   csend remote [--tls --pin <fp>] <h:p> <agent> <msg>  envoie à une autre machine
   csend link <enfant> <parent>     déclare <parent> comme parent de <enfant>
   csend unlink <enfant>            détache <enfant> de son parent
+  csend version                    affiche la version
   csend help
 
 Cible: nom de workspace (ex. SACEM), session-id (ex. 7f384610), ou ref (surface:42).
@@ -91,6 +96,10 @@ func main() {
 		cmdServe(os.Args[2:]) // réseau — indépendant du backend terminal
 	case "remote":
 		cmdRemote(os.Args[2:])
+	case "hook":
+		cmdHook(os.Args[2:]) // câble comme hook UserPromptSubmit → réception live
+	case "watch":
+		cmdWatch(os.Args[2:])
 	case "_why": // hidden diagnostic
 		mustBackend()
 		tgt, err := resolveTarget(os.Args[2])
@@ -102,6 +111,8 @@ func main() {
 			fail(err.Error())
 		}
 		fmt.Println(StateDebug(screen))
+	case "version", "-v", "--version", "-V":
+		fmt.Printf("csend %s\n", version)
 	case "h", "-h", "--h", "help", "-help", "--help", "-?":
 		fmt.Println(usage)
 	default:
