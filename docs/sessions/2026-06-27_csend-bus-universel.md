@@ -98,6 +98,25 @@ tags: [csend, inter-agent, architecture, crypto, pqc, memoire]
   upserts concurrents = 25 agents). **O anti-replay** (dédup sur le nonce signé). Tests.
 - 2026-06-29 — **P CI cross-OS** (Linux/macOS/Windows) + race + **fuzz** du parser. **Q**
   unités launchd/systemd + **démo runnable 2 agents** (collaboration via hook, prouvée).
+- 2026-06-29 — **Viabilité (workflow /startup + /brainstorming)** : analyse marché réelle
+  (marché agents IA ~8 Md$ en 2026 ; Agent Teams natif depuis févr. 2026 = doublon du cœur
+  « messagerie inter-sessions »). Verdict validé par Aïssa : csend **viable en open source**,
+  pas en business → `docs/adoption/playbook-adoption-oss.md`.
+- 2026-06-29 — **Build « tout réaliser » (4 agents parallèles)** : (1) docs/confiance — README
+  v2, SECURITY, CHANGELOG, **LICENSE MIT** (manquait alors que revendiqué partout), Formula
+  Homebrew, release ; (2) adaptateurs Codex/Gemini + tests ; (3) site landing terminal-souverain
+  (anti-slop, zéro fausse preuve) ; (4) vidéo de lancement `brag` (sans audio, publiable). Vert.
+- 2026-06-29 — **Calibration adaptateurs sur SOURCE PRIMAIRE (§2/§29)** : Gemini sur le bundle
+  installé `@google/gemini-cli` 0.40.1 (vérifié par grep local), Codex sur `openai/codex`
+  `rust-v0.142.3` (contre-vérifié par fetch). Suppositions fausses retirées (`context left`,
+  `gpt-\d`, `⏎ send`). `go test ./...` vert. Commit `3bac2fd`.
+- 2026-06-29 — **Prep publication** : `csend version` câblé (+ injection ldflags
+  goreleaser/Homebrew), `_backup/` et `brag-output/` ignorés, statut Codex/Gemini mis à jour
+  (README + site). Commits `e3dfc23` (docs) + `eb13d6c` (site).
+- 2026-06-29 — **Revert effet de bord §5** : `hyperframes init` (lancé pour la vidéo) avait semé
+  des liens dans 9 outils d'agents tiers (`.codex`/`.cursor`/`.continue`/`.hermes`/…) + 8
+  dossiers dans `~/.agents`. Révertés (72 liens + 8 dossiers) avec manifestes de backup ;
+  `~/.claude` et le reste du store `~/.agents` (skills vidéo utilisables) préservés (choix Aïssa).
 
 ## Actions à mener à l'avenir
 
@@ -105,7 +124,9 @@ Triage complet et honnête dans **`docs/NEXT.md`** (raison réelle de chaque blo
 - Reporté par choix (faible ROI) : backend `screen`.
 - Bloqué par prérequis physique : passkey WebAuthn (authentificateur), TLS hybride PQC,
   clients mobiles, Windows natif (coop-only — limite physique assumée).
-- Bloqué par absence de vraies données (§2) : adaptateurs Codex/Gemini, bridge Agent Teams.
+- Adaptateurs Codex/Gemini : **calibrés sur source officielle** (gemini-cli 0.40.1, codex
+  rust-v0.142.3) ; reste la **confirmation par capture d'écran live** (auth Gemini / install
+  Codex requis). Bridge Agent Teams : toujours à concevoir (§2).
 - Publication (GitHub/Homebrew/site) : en attente du feu vert d'Aïssa.
 
 ## Notes / Décisions / Blocages
