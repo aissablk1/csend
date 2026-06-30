@@ -11,10 +11,10 @@ import (
 func TestScanJournalHashesNeverLeaksPlaintext(t *testing.T) {
 	dir := t.TempDir()
 	ib := &Inbox{Root: filepath.Join(dir, "inbox")}
-	if err := ib.Deliver(InboxMessage{ID: "1", TS: "2026-06-30T10:00:00Z", From: "gemini-rev", To: "claude-dev", Body: "secret en clair"}); err != nil {
+	if err := ib.Deliver(InboxMessage{ID: "1", TS: "2026-06-30T10:00:00Z", From: "gemini-rev", Provider: "gemini", To: "claude-dev", Body: "secret en clair"}); err != nil {
 		t.Fatal(err)
 	}
-	if err := ib.Deliver(InboxMessage{ID: "2", TS: "2026-06-30T10:00:01Z", From: "gemini-rev", To: "claude-dev", Sealed: &SealedMessage{Ct: []byte("CIPHERTEXT-OPAQUE")}}); err != nil {
+	if err := ib.Deliver(InboxMessage{ID: "2", TS: "2026-06-30T10:00:01Z", From: "gemini-rev", Provider: "gemini", To: "claude-dev", Sealed: &SealedMessage{Ct: []byte("CIPHERTEXT-OPAQUE")}}); err != nil {
 		t.Fatal(err)
 	}
 	entries := scanJournal(ib.Root)
@@ -30,6 +30,9 @@ func TestScanJournalHashesNeverLeaksPlaintext(t *testing.T) {
 		}
 		if e.From != "gemini-rev" || e.To != "claude-dev" {
 			t.Fatalf("métadonnées corrompues: %+v", e)
+		}
+		if e.Provider != "gemini" {
+			t.Fatalf("provider non porté dans l'enveloppe: %+v", e)
 		}
 	}
 }

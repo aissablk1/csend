@@ -153,6 +153,16 @@ func cmdID(args []string) {
 	fmt.Printf("identité locale  fingerprint: %s\n  agent-id: %s\n", fingerprint(b), selfAgentID())
 }
 
+// selfProvider renvoie l'éditeur (claude|codex|gemini…) de la session courante,
+// lu depuis le registre — peuple l'enveloppe pour que le bus soit « provider-aware »
+// (c'est ce qui rend la collaboration cross-vendor visible : qui parle, et de quel CLI).
+func selfProvider(s *Store) string {
+	if r, ok, _ := s.GetSession(selfAgentID()); ok {
+		return r.Provider
+	}
+	return ""
+}
+
 // cmdInbox delivers a message COOPERATIVELY to a recipient's mailbox (no cmux).
 //
 //	csend inbox <destinataire> <message…>
@@ -163,7 +173,7 @@ func cmdInbox(args []string) {
 	to := args[0]
 	body := strings.Join(args[1:], " ")
 	s := mustStore()
-	m := InboxMessage{ID: newID(), TS: nowRFC3339(), From: selfAgentID(), To: to}
+	m := InboxMessage{ID: newID(), TS: nowRFC3339(), From: selfAgentID(), To: to, Provider: selfProvider(s), Kind: "msg"}
 	enc := ""
 	if sealed, ok := maybeSeal(s, to, body); ok {
 		m.Sealed = sealed

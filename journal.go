@@ -20,11 +20,12 @@ import (
 )
 
 type journalEntry struct {
-	TS    string `json:"ts"`
-	From  string `json:"from"`
-	To    string `json:"to"`
-	Sum   string `json:"sha256"`
-	State string `json:"state"` // "chiffré" | "clair"
+	TS       string `json:"ts"`
+	From     string `json:"from"`
+	Provider string `json:"provider,omitempty"` // éditeur de l'expéditeur
+	To       string `json:"to"`
+	Sum      string `json:"sha256"`
+	State    string `json:"state"` // "chiffré" | "clair"
 }
 
 // scanJournal parcourt toutes les boîtes (en attente + archivées .read) et renvoie
@@ -56,7 +57,7 @@ func scanJournal(root string) []journalEntry {
 					raw, state = m.Sealed.Ct, "chiffré" // on hash le ciphertext, jamais le clair
 				}
 				sum := sha256.Sum256(raw)
-				out = append(out, journalEntry{m.TS, m.From, m.To, hex.EncodeToString(sum[:])[:16], state})
+				out = append(out, journalEntry{m.TS, m.From, m.Provider, m.To, hex.EncodeToString(sum[:])[:16], state})
 			}
 		}
 	}
@@ -81,6 +82,10 @@ func cmdJournal(args []string) {
 	}
 	fmt.Printf("Journal du bus — %d message(s), corps en HASH (jamais le clair) :\n", len(out))
 	for _, e := range out {
-		fmt.Printf("  %s  %s → %s : sha256:%s…  (%s)\n", e.TS, e.From, e.To, e.Sum, e.State)
+		who := e.From
+		if e.Provider != "" {
+			who = e.Provider + ":" + e.From // rend le cross-vendor visible : gemini:gemini-rev → claude-dev
+		}
+		fmt.Printf("  %s  %s → %s : sha256:%s…  (%s)\n", e.TS, who, e.To, e.Sum, e.State)
 	}
 }

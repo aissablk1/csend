@@ -31,12 +31,14 @@ func (s *Store) Inbox() *Inbox {
 // InboxMessage is one cooperative message. Body holds plaintext for local trust;
 // Sealed (optional) carries an E2E envelope when sender/recipient identities exist.
 type InboxMessage struct {
-	ID     string         `json:"id"`
-	TS     string         `json:"ts"`
-	From   string         `json:"from"`
-	To     string         `json:"to"`
-	Body   string         `json:"body,omitempty"`
-	Sealed *SealedMessage `json:"sealed,omitempty"`
+	ID       string         `json:"id"`
+	TS       string         `json:"ts"`
+	From     string         `json:"from"`
+	To       string         `json:"to"`
+	Provider string         `json:"provider,omitempty"` // éditeur de l'expéditeur (claude|codex|gemini…)
+	Kind     string         `json:"kind,omitempty"`     // msg | nudge | result
+	Body     string         `json:"body,omitempty"`
+	Sealed   *SealedMessage `json:"sealed,omitempty"`
 }
 
 func (ib *Inbox) agentDir(agentID string) string {
