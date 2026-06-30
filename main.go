@@ -103,6 +103,8 @@ func main() {
 		cmdHook(os.Args[2:]) // câble comme hook UserPromptSubmit → réception live
 	case "watch":
 		cmdWatch(os.Args[2:])
+	case "journal":
+		cmdJournal(os.Args[2:]) // trace du bus (hash only, jamais le clair) — money-frame démo
 	case "_why": // hidden diagnostic
 		mustBackend()
 		tgt, err := resolveTarget(os.Args[2])
