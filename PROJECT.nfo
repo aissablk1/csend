@@ -14,7 +14,7 @@
   Contact ............ contact@aissabelkoussa.fr
   Website ............ https://aissabelkoussa.fr
   Repository ......... https://github.com/aissablk1/csend  (à publier)
-  License ............ MIT
+  License ............ Apache-2.0
   Created ............ 2026-06-27
   Updated ............ 2026-06-27
   Version ............ 0.2.0-dev
@@ -116,7 +116,7 @@
 
 ================================================================================
 
-   © 2026 Aïssa BELKOUSSA — Sous licence MIT (voir License ci-dessus).
+   © 2026 Aïssa BELKOUSSA — Sous licence Apache-2.0 (voir License ci-dessus).
 
    View with monospace font (Menlo, JetBrains Mono, Cascadia Code, Consolas).
 

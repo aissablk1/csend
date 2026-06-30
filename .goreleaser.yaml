@@ -39,7 +39,7 @@ brews:
       name: homebrew-tap
     homepage: "https://csend.dev"
     description: "Bus de messagerie inter-agents pour CLI (state-aware, chiffré, zéro dépendance)"
-    license: "MIT"
+    license: "Apache-2.0"
     install: |
       bin.install "csend"
     test: |

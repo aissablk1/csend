@@ -1,7 +1,7 @@
 # csend
 
 [![CI](https://github.com/aissablk1/csend/actions/workflows/ci.yml/badge.svg)](https://github.com/aissablk1/csend/actions/workflows/ci.yml)
-[![Licence : MIT](https://img.shields.io/badge/licence-MIT-blue.svg)](LICENSE)
+[![Licence : Apache-2.0](https://img.shields.io/badge/licence-Apache--2.0-blue.svg)](LICENSE)
 [![Go 1.24](https://img.shields.io/badge/Go-1.24-00ADD8?logo=go&logoColor=white)](https://go.dev/dl/)
 [![Go Report Card](https://goreportcard.com/badge/github.com/aissablk1/csend)](https://goreportcard.com/report/github.com/aissablk1/csend)
 [![Zéro dépendance](https://img.shields.io/badge/dépendances-0%20(stdlib)-success)](go.mod)
@@ -11,7 +11,7 @@
 d'agent CLI (Claude Code, Codex, Gemini…) écrit à une **autre session en cours** — en
 lisant son état (idle / busy / confirmation) **avant** d'agir, à travers terminaux,
 providers et machines, **chiffré de bout en bout** et résistant au quantique. Go,
-**zéro dépendance**, MIT.
+**zéro dépendance**, Apache-2.0.
 
 > **Le trou que csend comble.** Aucune API officielle n'injecte un prompt dans une
 > session d'agent CLI **vivante** (cf. les feature requests Claude Code fermées/ouvertes
@@ -209,4 +209,4 @@ CI : `go vet` + `go test -race ./...` + build, à chaque push
 
 ---
 
-**Auteur** : Aïssa BELKOUSSA · contact@aissabelkoussa.fr · Licence MIT
+**Auteur** : Aïssa BELKOUSSA · contact@aissabelkoussa.fr · Licence Apache-2.0
