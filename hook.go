@@ -89,6 +89,7 @@ func readHookStdin() hookPayload {
 // context (consuming them so each surfaces once). Prints nothing when empty — zéro
 // bruit dans le hook. Provider-aware : émet la forme attendue par chaque CLI.
 func cmdHook(args []string) {
+	forceProvider := ""
 	for i, a := range args {
 		if a == "--install" {
 			prov := "claude"
@@ -98,8 +99,18 @@ func cmdHook(args []string) {
 			fmt.Println(hookInstallFor(prov))
 			return
 		}
+		if a == "--provider" && i+1 < len(args) {
+			forceProvider = args[i+1]
+		}
 	}
 	p := readHookStdin()
+	if forceProvider != "" { // override l'auto-détection quand le CLI ne passe pas hook_event_name
+		if forceProvider == "gemini" {
+			p.HookEventName = "BeforeAgent"
+		} else {
+			p.HookEventName = "UserPromptSubmit"
+		}
+	}
 	s := mustStore()
 	agent := hookIdentity(p)
 	msgs, err := s.Inbox().Receive(agent, true)

@@ -29,11 +29,15 @@ Usage:
         --to-siblings              vers les frères ; --to-descendants vers tout le sous-arbre
         --from <session>           change la base (défaut: la session courante)
   csend read <cible> [--lines N]   lit l'écran d'une session
+  csend key <cible> <touche>       envoie une touche brute (enter|escape|ctrl+c|ctrl+u…)
   csend register [--id X --provider P]  inscrit CETTE session sur le bus (tout OS/terminal)
   csend agents                     flotte coopérative (tous terminaux/providers/OS)
   csend whoami                     agent-id + identité + inbox de cette session
   csend recv [--peek]              lit (et vide) l'inbox coopératif de CETTE session
   csend inbox <cible> <message…>   dépose un message coopératif (hors cmux, tout OS)
+  csend hook [--install [P]] [--provider P]  réception live (hook UserPromptSubmit) ; --install = snippet
+  csend watch [--interval N]       tail live de l'inbox de CETTE session
+  csend journal [--json]           trace du bus (de→à, hash only, jamais le clair)
   csend id [--create|--export]     identité crypto locale (vault) ; --export = jeton public
   csend contact add <agent> <jeton>  enregistre la clé publique d'un pair (→ chiffrement E2E)
   csend contact list               liste les contacts connus
