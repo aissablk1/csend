@@ -33,6 +33,47 @@ func TestNetworkLoopbackDeliver(t *testing.T) {
 	}
 }
 
+// Un message SCELLÉ E2E doit survivre au réseau intact et rester ouvrable avec le bon
+// couple from→to : preuve que l'AAD liée dans la signature/AEAD (§41) traverse le fil.
+func TestNetworkE2ESealedRoundtrip(t *testing.T) {
+	alice, _ := NewIdentity()
+	bob, _ := NewIdentity()
+	sealed, err := Seal(bob.Public(), alice, []byte("verdict chiffré sur le fil"), sealAAD("alice", "bob"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	s, _ := OpenStore(t.TempDir())
+	ln, err := net.Listen("tcp", "127.0.0.1:0")
+	if err != nil {
+		t.Fatal(err)
+	}
+	defer ln.Close()
+	go func() {
+		for {
+			c, e := ln.Accept()
+			if e != nil {
+				return
+			}
+			handleBusConn(s, c, nil)
+		}
+	}()
+	msg := InboxMessage{ID: newID(), TS: nowRFC3339(), From: "alice", To: "bob", Sealed: sealed}
+	if err := sendRemote(ln.Addr().String(), msg, nil); err != nil {
+		t.Fatal(err)
+	}
+	msgs, _ := s.Inbox().Receive("bob", true)
+	if len(msgs) != 1 || msgs[0].Sealed == nil {
+		t.Fatalf("message scellé non reçu intact via réseau: %+v", msgs)
+	}
+	pt, _, err := Open(bob, msgs[0].Sealed, sealAAD(msgs[0].From, msgs[0].To))
+	if err != nil {
+		t.Fatalf("ouverture après réseau échouée (aad perdue sur le fil ?): %v", err)
+	}
+	if string(pt) != "verdict chiffré sur le fil" {
+		t.Fatalf("plaintext après réseau = %q", pt)
+	}
+}
+
 func TestNetworkRejectsBadFrame(t *testing.T) {
 	s, _ := OpenStore(t.TempDir())
 	ln, _ := net.Listen("tcp", "127.0.0.1:0")
