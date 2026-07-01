@@ -101,3 +101,17 @@ tags: [csend, distribution, publication, release, homebrew, goreleaser, oss]
 - Acté : **crypto breaking → prochaine release `v0.3.0`** (transcript signé liant
   expéditeur+destinataire, incompatible v0.2.0). Au tag v0.3.0, la release + le tap Homebrew se
   régénéreront en Apache-2.0.
+
+## Addendum 2026-07-01 — Analyse concurrentielle « tous les axes »
+
+- Sur ordre d'Aïssa (« surpasser ClaudeKit »), teardown (skill `competitive-teardown` + 2 agents +
+  vérif source primaire). **Deux recadrages honnêtes (§29/§66)** : (1) ClaudeKit et les repos
+  `claudekit`/awesome-skills = **packs de capacités intra-session** (subagents *« inspect and
+  report »*), **pas** des concurrents de csend → « surpasser ClaudeKit » est un faux combat.
+  (2) Le vrai concurrent = **hcom** (`aannoo/hcom`) : bus inter-sessions, 10 CLIs, cross-machine,
+  chiffré E2E (PSK partagé), MIT, ~363★ — le créneau n'était **pas vide**.
+- **Wedge défendable** (vérifié) : hcom admet *« sender identity is not authorization »* (PSK, pas
+  d'auth d'expéditeur, pas de PQC, pas de recovery). csend seul à offrir **provenance signée
+  Ed25519 + chiffrement par destinataire + ML-KEM-768 + recovery Shamir/BIP-39**. Retards assumés :
+  largeur providers, intégration turnkey (hooks vs injection), maturité. Livrable :
+  `docs/strategy/csend-axes-de-depassement.md`.
